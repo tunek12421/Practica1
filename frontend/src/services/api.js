@@ -1,25 +1,28 @@
 import axios from 'axios';
-import { AuthProvider } from '../context/AuthContext';
+
+let token = null;
+
+export const setToken = (newToken) => {
+    token = newToken; // Actualiza el token
+    console.log('Token configurado:', token); // Log para depuración
+};
 
 const api = axios.create({
-    baseURL: 'http://localhost:3001/api', // Cambia según la URL del backend
+    baseURL: 'http://localhost:3001/api',
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
-// Interceptor para agregar el token dinámicamente
 api.interceptors.request.use(
     (config) => {
-        const token = AuthProvider?.current?.getToken(); // Accede al token a través del proveedor
+        console.log('Interceptando solicitud con token:', token); // Log para depuración
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export default api;

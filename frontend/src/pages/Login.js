@@ -14,7 +14,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await api.post('/auth/login', { username, password });
-            login(response.data.token, response.data.user); // Almacena el token en el contexto
+            login(response.data.token); // Solo pasamos el token al contexto
             navigate('/dashboard'); // Redirige al dashboard
         } catch (err) {
             setError(err.response?.data?.error || 'Error de conexión con el backend');
