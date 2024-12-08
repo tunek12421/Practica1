@@ -55,12 +55,7 @@ const Productos = () => {
             }
             setShowForm(false);
             setIsEditing(false);
-            setFormData({
-                nombre: '',
-                precio: '',
-                stock: '',
-                id_categoria: '',
-            });
+            setFormData({ nombre: '', precio: '', stock: '', id_categoria: '' });
             fetchProductos(); // Recargar lista
         } catch (error) {
             setModalMessage('Error al guardar el producto.');
@@ -105,86 +100,11 @@ const Productos = () => {
                     onClick={() => {
                         setShowForm(true);
                         setIsEditing(false);
-                        setFormData({
-                            nombre: '',
-                            precio: '',
-                            stock: '',
-                            id_categoria: '',
-                        });
+                        setFormData({ nombre: '', precio: '', stock: '', id_categoria: '' });
                     }}
                 >
                     Crear Producto
                 </button>
-            )}
-
-            {/* Formulario para crear/editar producto */}
-            {showForm && (
-                <form onSubmit={handleSubmit} className="bg-white p-4 shadow-md rounded mb-6">
-                    <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h3>
-                    <div className="mb-3">
-                        <label className="block text-gray-700">Nombre:</label>
-                        <input
-                            type="text"
-                            name="nombre"
-                            value={formData.nombre}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700">Precio:</label>
-                        <input
-                            type="number"
-                            name="precio"
-                            value={formData.precio}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700">Stock:</label>
-                        <input
-                            type="number"
-                            name="stock"
-                            value={formData.stock}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700">Categoría:</label>
-                        <input
-                            type="text"
-                            name="id_categoria"
-                            value={formData.id_categoria}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
-                        {isEditing ? 'Actualizar Producto' : 'Guardar Producto'}
-                    </button>
-                    <button
-                        type="button"
-                        className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
-                        onClick={() => {
-                            setShowForm(false);
-                            setIsEditing(false);
-                            setFormData({
-                                nombre: '',
-                                precio: '',
-                                stock: '',
-                                id_categoria: '',
-                            });
-                        }}
-                    >
-                        Cancelar
-                    </button>
-                </form>
             )}
 
             {/* Lista de productos */}
@@ -193,7 +113,7 @@ const Productos = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {productos.map((producto) => (
-                        <div key={producto.id_producto} className="p-6 bg-white shadow-md rounded-lg">
+                        <div key={producto.id_producto} className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]">
                             <h3 className="text-xl font-bold text-green-600">{producto.nombre}</h3>
                             <p className="text-gray-700">Precio: ${producto.precio}</p>
                             <p className="text-gray-700">Stock: {producto.stock}</p>
@@ -201,13 +121,13 @@ const Productos = () => {
                             {['Administrador', 'Gerente'].includes(rol) && (
                                 <div className="mt-4 space-x-2">
                                     <button
-                                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                                        className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-400"
                                         onClick={() => handleEdit(producto)}
                                     >
                                         Editar
                                     </button>
                                     <button
-                                        className="bg-red-500 text-white px-2 py-1 rounded"
+                                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-400"
                                         onClick={() => setConfirmDelete(producto.id_producto)}
                                     >
                                         Eliminar
@@ -216,6 +136,75 @@ const Productos = () => {
                             )}
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Modal para el formulario */}
+            {showForm && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+                        <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h3>
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-3">
+                                <label className="block text-gray-700">Nombre:</label>
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    value={formData.nombre}
+                                    onChange={handleChange}
+                                    className="w-full p-2 border rounded"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700">Precio:</label>
+                                <input
+                                    type="number"
+                                    name="precio"
+                                    value={formData.precio}
+                                    onChange={handleChange}
+                                    className="w-full p-2 border rounded"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700">Stock:</label>
+                                <input
+                                    type="number"
+                                    name="stock"
+                                    value={formData.stock}
+                                    onChange={handleChange}
+                                    className="w-full p-2 border rounded"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700">Categoría:</label>
+                                <input
+                                    type="text"
+                                    name="id_categoria"
+                                    value={formData.id_categoria}
+                                    onChange={handleChange}
+                                    className="w-full p-2 border rounded"
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+                                {isEditing ? 'Actualizar Producto' : 'Guardar Producto'}
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                                onClick={() => {
+                                    setShowForm(false);
+                                    setIsEditing(false);
+                                    setFormData({ nombre: '', precio: '', stock: '', id_categoria: '' });
+                                }}
+                            >
+                                Cancelar
+                            </button>
+                        </form>
+                    </div>
                 </div>
             )}
 

@@ -7,6 +7,7 @@ import {
   FiShoppingCart,
   FiLayers,
   FiLogOut,
+  FiDollarSign,
 } from "react-icons/fi";
 import { AiOutlineLogout } from "react-icons/ai"; // Nuevo icono para cerrar sesión colapsado
 
@@ -110,6 +111,22 @@ const Sidebar = () => {
                 }`}
               >
                 Ventas
+              </span>
+            </Link>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <Link
+              to="/modopago"
+              className="flex items-center space-x-4 hover:text-blue-300"
+            >
+              <FiDollarSign size={25} />
+              <span
+                className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
+                  isCollapsed ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                Pagos
               </span>
             </Link>
           </div>

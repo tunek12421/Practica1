@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -99,11 +99,13 @@ const Clientes = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Clientes</h2>
-            {['Empleado', 'Administrador', 'Gerente'].includes(rol) && (
+        <main className="container mx-auto px-4 py-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Gestión de Clientes</h2>
+
+            {/* Botón para crear cliente (solo Administrador/Gerente) */}
+            {['Administrador', 'Gerente'].includes(rol) && (
                 <button
-                    className="bg-green-500 text-white px-4 py-2 mb-4 rounded-lg shadow-md hover:bg-green-600 transition-all"
+                    className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
                     onClick={() => {
                         setShowForm(true);
                         setIsEditing(false);
@@ -117,145 +119,139 @@ const Clientes = () => {
                         });
                     }}
                 >
-                    {isEditing ? 'Editar Cliente' : 'Crear Cliente'}
+                    Crear Cliente
                 </button>
             )}
 
-            {showForm && (
-                <form onSubmit={handleSubmit} className="bg-white p-6 shadow-lg rounded-lg">
-                     <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Cliente' : 'Crear Cliente'}</h3>
-                    <div className="mb-3">
-                        <label className="block text-gray-700 font-semibold">Nombre:</label>
-                        <input
-                        type="text"
-                        name="nombre"
-                        value={formData.nombre}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700 font-semibold">Apellido:</label>
-                        <input
-                            type="text"
-                            name="apellido"
-                            value={formData.apellido}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" 
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700 font-semibold">Dirección:</label>
-                        <input
-                            type="text"
-                            name="direccion"
-                            value={formData.direccion}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700 font-semibold">Fecha de Nacimiento:</label>
-                        <input
-                            type="date"
-                            name="fecha_nacimiento"
-                            value={formData.fecha_nacimiento}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700 font-semibold">Teléfono:</label>
-                        <input
-                            type="text"
-                            name="telefono"
-                            value={formData.telefono}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block text-gray-700 font-semibold">Correo Electrónico:</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all">
-                        {isEditing ? 'Actualizar Cliente' : 'Guardar Cliente'}
-                    </button>
-                    <button
-                        type="button"
-                        className="bg-red-500 text-white px-4 py-2 rounded ml-2 px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all"
-                        onClick={() => {
-                            setShowForm(false);
-                            setIsEditing(false);
-                            setFormData({
-                                nombre: '',
-                                apellido: '',
-                                direccion: '',
-                                fecha_nacimiento: '',
-                                telefono: '',
-                                email: '',
-                            });
-                        }}
-                    >
-                        Cancelar
-                    </button>
-                </form>
+            {/* Lista de clientes */}
+            {loading ? (
+                <p>Cargando clientes...</p>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" >
+                    {clientes.map((cliente) => (
+                        <div key={cliente.id_cliente} className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]">
+                            <h3 className="text-xl font-bold text-green-600">{cliente.nombre} {cliente.apellido}</h3>
+                            <p className="text-gray-700">Dirección: {cliente.direccion}</p>
+                            <p className="text-gray-700">Fecha de Nacimiento: {cliente.fecha_nacimiento}</p>
+                            <p className="text-gray-700">Teléfono: {cliente.telefono}</p>
+                            <p className="text-gray-700">Correo Electrónico: {cliente.email}</p>
+                            {['Administrador', 'Gerente'].includes(rol) && (
+                                <div className="mt-4 space-x-2">
+                                    <button
+                                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                                        onClick={() => handleEdit(cliente)}
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        className="bg-red-500 text-white px-2 py-1 rounded"
+                                        onClick={() => setConfirmDelete(cliente.id_cliente)}
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
             )}
 
-            {loading ? (
-                <p>Cargando...</p>
-            ) : (
-                <table className="min-w-full bg-white shadow-lg rounded-lg">
-                    <thead>
-                        <tr className="bg-black text-white"> 
-                            <th className="py-3 px-6 text-left font-semibold">Nombre</th>
-                            <th className="py-3 px-6 text-left font-semibold">Apellido</th>
-                            <th className="py-3 px-6 text-left font-semibold">Dirección</th>
-                            <th className="py-3 px-6 text-left font-semibold">Teléfono</th>
-                            <th className="py-3 px-6 text-left font-semibold">Correo Electrónico</th>
-                            {['Administrador', 'Gerente'].includes(rol) && <th className="py-3 px-6 text-left font-semibold">Acciones</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {clientes.map((cliente) => (
-                            <tr key={cliente.id_cliente}>
-                                <td className="py-2 px-4">{cliente.nombre}</td>
-                                <td className="py-2 px-4">{cliente.apellido}</td>
-                                <td className="py-2 px-4">{cliente.direccion}</td>
-                                <td className="py-2 px-4">{cliente.telefono}</td>
-                                <td className="py-2 px-4">{cliente.email}</td>
-                                {['Administrador', 'Gerente'].includes(rol) && (
-                                    <td className="py-2 px-4 space-x-2">
-                                        <button
-                                            className="bg-green-500 text-white px-2 py-1 rounded-lg shadow-md hover:bg-green-600 transition-all"
-                                            onClick={() => handleEdit(cliente)}
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            className="bg-red-500 text-white px-2 py-1 rounded-lg shadow-md hover:bg-red-600 transition-all"
-                                            onClick={() => setConfirmDelete(cliente.id_cliente)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            {/* Modal para el formulario */}
+            {showForm && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+                        <form onSubmit={handleSubmit} className="bg-white p-6 shadow-lg rounded-lg">
+                            <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Cliente' : 'Crear Cliente'}</h3>
+                            <div className="mb-3">
+                                <label className="block text-gray-700 font-semibold">Nombre:</label>
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    value={formData.nombre}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700 font-semibold">Apellido:</label>
+                                <input
+                                    type="text"
+                                    name="apellido"
+                                    value={formData.apellido}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700 font-semibold">Dirección:</label>
+                                <input
+                                    type="text"
+                                    name="direccion"
+                                    value={formData.direccion}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700 font-semibold">Fecha de Nacimiento:</label>
+                                <input
+                                    type="date"
+                                    name="fecha_nacimiento"
+                                    value={formData.fecha_nacimiento}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700 font-semibold">Teléfono:</label>
+                                <input
+                                    type="text"
+                                    name="telefono"
+                                    value={formData.telefono}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="block text-gray-700 font-semibold">Correo Electrónico:</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all">
+                                {isEditing ? 'Actualizar Cliente' : 'Guardar Cliente'}
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-red-500 text-white px-4 py-2 rounded ml-2 shadow-md hover:bg-red-600 transition-all"
+                                onClick={() => {
+                                    setShowForm(false);
+                                    setIsEditing(false);
+                                    setFormData({
+                                        nombre: '',
+                                        apellido: '',
+                                        direccion: '',
+                                        fecha_nacimiento: '',
+                                        telefono: '',
+                                        email: '',
+                                    });
+                                }}
+                            >
+                                Cancelar
+                            </button>
+                        </form>
+                    </div>
+                    </div>
             )}
 
             {/* Modal para notificaciones */}
@@ -295,7 +291,7 @@ const Clientes = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </main>
     );
 };
 

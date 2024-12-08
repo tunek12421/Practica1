@@ -7,8 +7,9 @@ import Clientes from './pages/Clientes';
 import Productos from './pages/Productos';
 import Ventas from './pages/Ventas';
 import Categorias from './pages/Categorias';
-import ProtectedRoute from './components/ProtectedRoute';
+import ModoPago from './pages/ModoPago'; // Importa el componente ModoPago
 
+import ProtectedRoute from './components/ProtectedRoute';
 
 const AppRoutes = () => (
     <BrowserRouter>
@@ -48,6 +49,14 @@ const AppRoutes = () => (
                     element={
                         <ProtectedRoute allowedRoles={['Administrador', 'Gerente']}>
                             <Categorias />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/modopago"
+                    element={
+                        <ProtectedRoute allowedRoles={['Administrador', 'Gerente']}>
+                            <ModoPago />
                         </ProtectedRoute>
                     }
                 />
