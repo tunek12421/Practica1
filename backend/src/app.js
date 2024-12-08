@@ -6,6 +6,7 @@ const productoRoutes = require('./routes/productoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
 const authRoutes = require('./routes/authRoutes');
 const ventaRoutes = require('./routes/ventaRoutes');
+const modoPagoRoutes = require('./routes/modoPagoRoutes');
 
 app.get('/', (req, res) => {
     res.json({ message: 'Servidor funcionando correctamente' });
@@ -16,6 +17,7 @@ app.use('/api/clientes', clienteRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/categorias', categoriaRoutes);
 app.use('/api/ventas', ventaRoutes);
+app.use('/api/modo-pago', modoPagoRoutes);
 
 app.use('/api/auth', authRoutes);
 

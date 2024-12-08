@@ -1,6 +1,7 @@
 const Venta = require('../models/ventaModel');
 const pdfkit = require('pdfkit');
 const fs = require('fs');
+const path = require('path');
 
 const ventaController = {
     create: async (req, res) => {
@@ -43,6 +44,7 @@ const ventaController = {
             res.status(500).json({ error: err.message });
         }
     },
+
     getFactura: (req, res) => {
         const { id } = req.params;
 
@@ -50,10 +52,20 @@ const ventaController = {
             if (err) return res.status(500).json({ error: err.message });
             if (rows.length === 0) return res.status(404).json({ error: 'Factura no encontrada' });
 
-            const doc = new pdfkit();
-            const filePath = `./facturas/factura_${id}.pdf`;
+            const directoryPath = path.resolve(__dirname, '../facturas');
+            const fileName = `factura_${id}.pdf`;
+            const filePath = path.join(directoryPath, fileName);
 
-            doc.pipe(fs.createWriteStream(filePath));
+            // Crear directorio si no existe
+            if (!fs.existsSync(directoryPath)) {
+                fs.mkdirSync(directoryPath, { recursive: true });
+            }
+
+            const doc = new pdfkit();
+            const writeStream = fs.createWriteStream(filePath);
+
+            // Generar PDF
+            doc.pipe(writeStream);
             doc.fontSize(16).text(`Factura #${id}`, { align: 'center' });
             doc.text(`Fecha: ${rows[0].fecha}`);
             doc.text(`Cliente: ${rows[0].cliente}`);
@@ -62,15 +74,30 @@ const ventaController = {
 
             let total = 0;
             rows.forEach((row) => {
-                doc.text(`${row.producto} - Cantidad: ${row.cantidad} - Precio: ${row.precio} - Subtotal: ${row.subtotal}`);
+                doc.text(`${row.producto} - Cantidad: ${row.cantidad} - Precio: $${row.precio.toFixed(2)} - Subtotal: $${row.subtotal.toFixed(2)}`);
                 total += row.subtotal;
             });
 
             doc.moveDown();
-            doc.text(`Total: ${total}`, { align: 'right' });
+            doc.text(`Total: $${total.toFixed(2)}`, { align: 'right' });
             doc.end();
 
-            res.json({ message: 'Factura generada', filePath });
+            // Esperar a que el PDF se complete antes de enviarlo
+            writeStream.on('finish', () => {
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+                res.sendFile(filePath, (err) => {
+                    if (err) {
+                        console.error('Error al enviar el archivo:', err);
+                        res.status(500).json({ error: 'Error al enviar la factura.' });
+                    }
+                });
+            });
+
+            writeStream.on('error', (err) => {
+                console.error('Error al generar el archivo PDF:', err);
+                res.status(500).json({ error: 'Error al generar la factura.' });
+            });
         });
     },
 };
