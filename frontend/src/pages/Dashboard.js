@@ -17,7 +17,7 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <header className="bg-blue-600 text-white shadow-md p-4">
+            <header className="bg-[#17202A] text-white shadow-md p-4">
                 <h1 className="text-center text-2xl font-bold">Panel de Control</h1>
             </header>
             <main className="container mx-auto px-4 py-8">
@@ -26,20 +26,22 @@ const Dashboard = () => {
                     {/* Gestión de Clientes */}
                     <Link
                         to="/clientes"
-                        className="block p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition"
-                    >
+                        className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+                        >
                         <h3 className="text-xl font-bold text-blue-600">Gestión de Clientes</h3>
                         <p className="text-gray-600">
                             {['Administrador', 'Gerente'].includes(rol)
-                                ? 'Accede para gestionar clientes (CRUD completo).'
-                                : 'Añade nuevos clientes al sistema.'}
+                            ? 'Accede para gestionar clientes (CRUD completo).'
+                            : 'Añade nuevos clientes al sistema.'}
                         </p>
                     </Link>
+
 
                     {/* Gestión de Productos */}
                     <Link
                         to="/productos"
-                        className="block p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition"
+                        className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+
                     >
                         <h3 className="text-xl font-bold text-green-600">Gestión de Productos</h3>
                         <p className="text-gray-600">
@@ -52,7 +54,8 @@ const Dashboard = () => {
                     {/* Gestión de Categorías */}
                     <Link
                         to="/categorias"
-                        className="block p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition"
+                        className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+
                     >
                         <h3 className="text-xl font-bold text-orange-600">Gestión de Categorías</h3>
                         <p className="text-gray-600">
@@ -65,7 +68,8 @@ const Dashboard = () => {
                     {/* Gestión de Ventas */}
                     <Link
                         to="/ventas"
-                        className="block p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition"
+                        className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+
                     >
                         <h3 className="text-xl font-bold text-yellow-600">Gestión de Ventas</h3>
                         <p className="text-gray-600">
