@@ -1,11 +1,11 @@
-const app = require('./config/server');
+const app = require('./src/config/server');
 
 // Importar rutas
-const clienteRoutes = require('./routes/clienteRoutes');
-const productoRoutes = require('./routes/productoRoutes');
-const categoriaRoutes = require('./routes/categoriaRoutes');
-const authRoutes = require('./routes/authRoutes');
-const ventaRoutes = require('./routes/ventaRoutes');
+const clienteRoutes = require('./src/routes/clienteRoutes');
+const productoRoutes = require('./src/routes/productoRoutes');
+const categoriaRoutes = require('./src/routes/categoriaRoutes');
+const authRoutes = require('./src/routes/authRoutes');
+const ventaRoutes = require('./src/routes/ventaRoutes');
 
 app.get('/', (req, res) => {
     res.json({ message: 'Servidor funcionando correctamente' });

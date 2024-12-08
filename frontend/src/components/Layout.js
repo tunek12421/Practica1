@@ -1,16 +1,22 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
+
+
+import Sidebar from './sidebar';
 
 const Layout = () => {
     return (
-        <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-grow">
-                <Outlet /> {/* Renderiza la página actual */}
-            </main>
-            <Footer />
+        <div className="min-h-screen flex bg-gray-100">
+            {/* Sidebar fijo */}
+            <Sidebar />
+
+            {/* Contenido principal al lado derecho */}
+            <div className="flex flex-col flex-grow ml-64">
+                <main className="flex-grow  p-6">
+                    <Outlet /> {/* Renderiza la página actual */}
+                </main>
+        
+            </div>
         </div>
     );
 };

@@ -2,7 +2,6 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 const authController = {
     login: (req, res) => {
         const { username, password } = req.body;
@@ -10,12 +9,23 @@ const authController = {
             return res.status(400).json({ error: 'Se requiere username y password' });
         }
 
+        console.log('Intento de login con username:', username);
+        
         User.findByUsername(username, async (err, user) => {
-            if (err) return res.status(500).json({ error: err.message });
-            if (!user) return res.status(401).json({ error: 'Credenciales incorrectas' });
+            if (err) {
+               
+                return res.status(500).json({ error: err.message });
+            }
+            if (!user) {
+                
+                return res.status(401).json({ error: 'Credenciales incorrectas' });
+            }
 
             const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) return res.status(401).json({ error: 'Credenciales incorrectas' });
+            if (!isMatch) {
+               
+                return res.status(401).json({ error: 'Credenciales incorrectas' });
+            }
 
             const token = jwt.sign({ id: user.id_usuario, rol: user.rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.json({ token });

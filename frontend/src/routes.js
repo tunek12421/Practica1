@@ -9,6 +9,7 @@ import Ventas from './pages/Ventas';
 import Categorias from './pages/Categorias';
 import ProtectedRoute from './components/ProtectedRoute';
 
+
 const AppRoutes = () => (
     <BrowserRouter>
         <Routes>
