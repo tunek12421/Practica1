@@ -41,10 +41,10 @@ const ModoPago = () => {
         e.preventDefault();
         try {
             if (isEditing) {
-                await api.put(`/modoPago/${formData.num_pago}`, formData);
+                await api.put(`/modo-pago/${formData.num_pago}`, formData);
                 setModalMessage('Modo de pago actualizado correctamente.');
             } else {
-                await api.post('/modoPago', formData);
+                await api.post('/modo-pago', formData);
                 setModalMessage('Modo de pago creado correctamente.');
             }
             setShowForm(false);
@@ -63,7 +63,7 @@ const ModoPago = () => {
     const handleDelete = async () => {
         if (confirmDelete) {
             try {
-                await api.delete(`/modoPago/${confirmDelete}`);
+                await api.delete(`/modo-pago/${confirmDelete}`);
                 setModalMessage('Modo de pago eliminado correctamente.');
                 fetchModosPago(); // Recargar lista
             } catch (error) {
