@@ -103,7 +103,7 @@ const Clientes = () => {
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Clientes</h2>
             {['Empleado', 'Administrador', 'Gerente'].includes(rol) && (
                 <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+                    className="bg-green-500 text-white px-4 py-2 mb-4 rounded-lg shadow-md hover:bg-green-600 transition-all"
                     onClick={() => {
                         setShowForm(true);
                         setIsEditing(false);
@@ -122,80 +122,80 @@ const Clientes = () => {
             )}
 
             {showForm && (
-                <form onSubmit={handleSubmit} className="bg-white p-4 shadow-md rounded mb-6">
-                    <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Cliente' : 'Crear Cliente'}</h3>
+                <form onSubmit={handleSubmit} className="bg-white p-6 shadow-lg rounded-lg">
+                     <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Cliente' : 'Crear Cliente'}</h3>
                     <div className="mb-3">
-                        <label className="block text-gray-700">Nombre:</label>
+                        <label className="block text-gray-700 font-semibold">Nombre:</label>
                         <input
-                            type="text"
-                            name="nombre"
-                            value={formData.nombre}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded"
-                            required
+                        type="text"
+                        name="nombre"
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="block text-gray-700">Apellido:</label>
+                        <label className="block text-gray-700 font-semibold">Apellido:</label>
                         <input
                             type="text"
                             name="apellido"
                             value={formData.apellido}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" 
                             required
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="block text-gray-700">Dirección:</label>
+                        <label className="block text-gray-700 font-semibold">Dirección:</label>
                         <input
                             type="text"
                             name="direccion"
                             value={formData.direccion}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="block text-gray-700">Fecha de Nacimiento:</label>
+                        <label className="block text-gray-700 font-semibold">Fecha de Nacimiento:</label>
                         <input
                             type="date"
                             name="fecha_nacimiento"
                             value={formData.fecha_nacimiento}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="block text-gray-700">Teléfono:</label>
+                        <label className="block text-gray-700 font-semibold">Teléfono:</label>
                         <input
                             type="text"
                             name="telefono"
                             value={formData.telefono}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="block text-gray-700">Correo Electrónico:</label>
+                        <label className="block text-gray-700 font-semibold">Correo Electrónico:</label>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         />
                     </div>
-                    <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+                    <button type="submit" className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all">
                         {isEditing ? 'Actualizar Cliente' : 'Guardar Cliente'}
                     </button>
                     <button
                         type="button"
-                        className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                        className="bg-red-500 text-white px-4 py-2 rounded ml-2 px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all"
                         onClick={() => {
                             setShowForm(false);
                             setIsEditing(false);
@@ -217,15 +217,15 @@ const Clientes = () => {
             {loading ? (
                 <p>Cargando...</p>
             ) : (
-                <table className="min-w-full bg-white shadow-md rounded">
+                <table className="min-w-full bg-white shadow-lg rounded-lg">
                     <thead>
-                        <tr>
-                            <th className="py-2 px-4">Nombre</th>
-                            <th className="py-2 px-4">Apellido</th>
-                            <th className="py-2 px-4">Dirección</th>
-                            <th className="py-2 px-4">Teléfono</th>
-                            <th className="py-2 px-4">Correo Electrónico</th>
-                            {['Administrador', 'Gerente'].includes(rol) && <th className="py-2 px-4">Acciones</th>}
+                        <tr className="bg-black text-white"> 
+                            <th className="py-3 px-6 text-left font-semibold">Nombre</th>
+                            <th className="py-3 px-6 text-left font-semibold">Apellido</th>
+                            <th className="py-3 px-6 text-left font-semibold">Dirección</th>
+                            <th className="py-3 px-6 text-left font-semibold">Teléfono</th>
+                            <th className="py-3 px-6 text-left font-semibold">Correo Electrónico</th>
+                            {['Administrador', 'Gerente'].includes(rol) && <th className="py-3 px-6 text-left font-semibold">Acciones</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -239,13 +239,13 @@ const Clientes = () => {
                                 {['Administrador', 'Gerente'].includes(rol) && (
                                     <td className="py-2 px-4 space-x-2">
                                         <button
-                                            className="bg-yellow-500 text-white px-2 py-1 rounded"
+                                            className="bg-green-500 text-white px-2 py-1 rounded-lg shadow-md hover:bg-green-600 transition-all"
                                             onClick={() => handleEdit(cliente)}
                                         >
                                             Editar
                                         </button>
                                         <button
-                                            className="bg-red-500 text-white px-2 py-1 rounded"
+                                            className="bg-red-500 text-white px-2 py-1 rounded-lg shadow-md hover:bg-red-600 transition-all"
                                             onClick={() => setConfirmDelete(cliente.id_cliente)}
                                         >
                                             Eliminar
