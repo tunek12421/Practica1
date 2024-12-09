@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
-const Clientes = () => {
-    const [clientes, setClientes] = useState([]);
+const Detalles = () => {
+    const [detalles, setDetalles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        direccion: '',
-        fecha_nacimiento: '',
-        telefono: '',
-        email: '',
+        id_factura: '',
+        id_producto: '',
+        cantidad: '',
+        precio: '',
     });
     const [isEditing, setIsEditing] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
@@ -22,20 +20,20 @@ const Clientes = () => {
     const { auth } = useAuth();
     const { rol } = auth.user;
 
-    // Cargar lista de clientes
-    const fetchClientes = async () => {
+    // Cargar lista de detalles
+    const fetchDetalles = async () => {
         try {
-            const response = await api.get('/clientes');
-            setClientes(response.data);
+            const response = await api.get('/detalles');
+            setDetalles(response.data);
         } catch (error) {
-            console.error('Error al cargar los clientes:', error);
+            console.error('Error al cargar los detalles:', error);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchClientes();
+        fetchDetalles();
     }, []);
 
     // Manejar cambios en el formulario
@@ -44,45 +42,43 @@ const Clientes = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    // Crear cliente
+    // Crear o editar detalle
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (!isEditing) {
-                await api.post('/clientes', formData);
-                setModalMessage('Cliente creado correctamente.');
+            if (isEditing) {
+                await api.put(`/detalles/${formData.num_detalle}`, formData);
+                setModalMessage('Detalle actualizado correctamente.');
             } else {
-                await api.put(`/clientes/${formData.id_cliente}`, formData);
-                setModalMessage('Cliente actualizado correctamente.');
+                await api.post('/detalles', formData);
+                setModalMessage('Detalle creado correctamente.');
             }
             setShowForm(false);
             setIsEditing(false);
             setFormData({
-                nombre: '',
-                apellido: '',
-                direccion: '',
-                fecha_nacimiento: '',
-                telefono: '',
-                email: '',
+                id_factura: '',
+                id_producto: '',
+                cantidad: '',
+                precio: '',
             });
-            fetchClientes(); // Recargar lista
+            fetchDetalles(); // Recargar lista
         } catch (error) {
-            setModalMessage('Error al guardar el cliente.');
+            setModalMessage('Error al guardar el detalle.');
             console.error('Error:', error);
         } finally {
             setShowModal(true);
         }
     };
 
-    // Eliminar cliente
+    // Eliminar detalle
     const handleDelete = async () => {
         if (confirmDelete) {
             try {
-                await api.delete(`/clientes/${confirmDelete}`);
-                setModalMessage('Cliente eliminado correctamente.');
-                fetchClientes(); // Recargar lista
+                await api.delete(`/detalles/${confirmDelete}`);
+                setModalMessage('Detalle eliminado correctamente.');
+                fetchDetalles(); // Recargar lista
             } catch (error) {
-                setModalMessage('Error al eliminar el cliente.');
+                setModalMessage('Error al eliminar el detalle.');
                 console.error('Error:', error);
             } finally {
                 setShowModal(true);
@@ -91,66 +87,59 @@ const Clientes = () => {
         }
     };
 
-    // Mostrar formulario para editar cliente
-    const handleEdit = (cliente) => {
-        setFormData(cliente);
+    // Mostrar formulario para editar detalle
+    const handleEdit = (detalle) => {
+        setFormData(detalle);
         setIsEditing(true);
         setShowForm(true);
     };
 
     return (
         <main className="container mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Gestión de Clientes</h2>
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Gestión de Detalles</h2>
 
-            {/* Botón para crear cliente (Empleado puede añadir) */}
-            {['Empleado', 'Administrador', 'Gerente'].includes(rol) && (
+            {/* Botón para crear detalle (solo Administrador/Gerente) */}
+            {['Administrador', 'Gerente'].includes(rol) && (
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
                     onClick={() => {
                         setShowForm(true);
                         setIsEditing(false);
                         setFormData({
-                            nombre: '',
-                            apellido: '',
-                            direccion: '',
-                            fecha_nacimiento: '',
-                            telefono: '',
-                            email: '',
+                            id_factura: '',
+                            id_producto: '',
+                            cantidad: '',
+                            precio: '',
                         });
                     }}
                 >
-                    Crear Cliente
+                    Crear Detalle
                 </button>
             )}
 
-            {/* Lista de clientes */}
+            {/* Lista de detalles */}
             {loading ? (
-                <p>Cargando clientes...</p>
+                <p>Cargando detalles...</p>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {clientes.map((cliente) => (
-                        <div
-                            key={cliente.id_cliente}
-                            className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]"
-                        >
-                            <h3 className="text-xl font-bold text-green-600">
-                                {cliente.nombre} {cliente.apellido}
-                            </h3>
-                            <p className="text-gray-700">Dirección: {cliente.direccion}</p>
-                            <p className="text-gray-700">Fecha de Nacimiento: {cliente.fecha_nacimiento}</p>
-                            <p className="text-gray-700">Teléfono: {cliente.telefono}</p>
-                            <p className="text-gray-700">Correo Electrónico: {cliente.email}</p>
+                    {detalles.map((detalle) => (
+                        <div key={detalle.num_detalle} className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]">
+                            <h3 className="text-xl font-bold text-green-600">Detalle #{detalle.num_detalle}</h3>
+                            <p className="text-gray-700">Factura: {detalle.id_factura}</p>
+                            <p className="text-gray-700">Producto: {detalle.producto}</p>
+                            <p className="text-gray-700">Cantidad: {detalle.cantidad}</p>
+                            <p className="text-gray-700">Precio: ${detalle.precio.toFixed(2)}</p>
                             {['Administrador', 'Gerente'].includes(rol) && (
                                 <div className="mt-4 space-x-2">
                                     <button
                                         className="bg-yellow-500 text-white px-2 py-1 rounded"
-                                        onClick={() => handleEdit(cliente)}
+                                        onClick={() => handleEdit(detalle)}
                                     >
                                         Editar
                                     </button>
                                     <button
                                         className="bg-red-500 text-white px-2 py-1 rounded"
-                                        onClick={() => setConfirmDelete(cliente.id_cliente)}
+                                        onClick={() => setConfirmDelete(detalle.num_detalle)}
                                     >
                                         Eliminar
                                     </button>
@@ -166,96 +155,59 @@ const Clientes = () => {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
                         <form onSubmit={handleSubmit} className="bg-white p-6 shadow-lg rounded-lg">
-                            <h3 className="text-xl font-bold mb-4">
-                                {isEditing ? 'Editar Cliente' : 'Crear Cliente'}
-                            </h3>
+                            <h3 className="text-xl font-bold mb-4">{isEditing ? 'Editar Detalle' : 'Crear Detalle'}</h3>
                             <div className="mb-3">
-                                <label className="block text-gray-700 font-semibold">Nombre:</label>
+                                <label className="block text-gray-700 font-semibold">Factura ID:</label>
                                 <input
-                                    type="text"
-                                    name="nombre"
-                                    value={formData.nombre}
+                                    type="number"
+                                    name="id_factura"
+                                    value={formData.id_factura}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     required
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="block text-gray-700 font-semibold">Apellido:</label>
+                                <label className="block text-gray-700 font-semibold">Producto ID:</label>
                                 <input
-                                    type="text"
-                                    name="apellido"
-                                    value={formData.apellido}
+                                    type="number"
+                                    name="id_producto"
+                                    value={formData.id_producto}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     required
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="block text-gray-700 font-semibold">Dirección:</label>
+                                <label className="block text-gray-700 font-semibold">Cantidad:</label>
                                 <input
-                                    type="text"
-                                    name="direccion"
-                                    value={formData.direccion}
+                                    type="number"
+                                    name="cantidad"
+                                    value={formData.cantidad}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     required
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="block text-gray-700 font-semibold">Fecha de Nacimiento:</label>
+                                <label className="block text-gray-700 font-semibold">Precio:</label>
                                 <input
-                                    type="date"
-                                    name="fecha_nacimiento"
-                                    value={formData.fecha_nacimiento}
+                                    type="number"
+                                    step="0.01"
+                                    name="precio"
+                                    value={formData.precio}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
-                                <label className="block text-gray-700 font-semibold">Teléfono:</label>
-                                <input
-                                    type="text"
-                                    name="telefono"
-                                    value={formData.telefono}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="block text-gray-700 font-semibold">Correo Electrónico:</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    required
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all"
-                            >
-                                {isEditing ? 'Actualizar Cliente' : 'Guardar Cliente'}
+                            <button type="submit" className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all">
+                                {isEditing ? 'Actualizar Detalle' : 'Guardar Detalle'}
                             </button>
                             <button
                                 type="button"
                                 className="bg-red-500 text-white px-4 py-2 rounded ml-2 shadow-md hover:bg-red-600 transition-all"
-                                onClick={() => {
-                                    setShowForm(false);
-                                    setIsEditing(false);
-                                    setFormData({
-                                        nombre: '',
-                                        apellido: '',
-                                        direccion: '',
-                                        fecha_nacimiento: '',
-                                        telefono: '',
-                                        email: '',
-                                    });
-                                }}
+                                onClick={() => setShowForm(false)}
                             >
                                 Cancelar
                             </button>
@@ -283,9 +235,7 @@ const Clientes = () => {
             {confirmDelete && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-4 rounded shadow-md text-center">
-                        <p className="text-gray-700">
-                            ¿Estás seguro de que deseas eliminar este cliente?
-                        </p>
+                        <p className="text-gray-700">¿Estás seguro de que deseas eliminar este detalle?</p>
                         <div className="mt-4 space-x-4">
                             <button
                                 className="bg-red-500 text-white px-4 py-2 rounded"
@@ -307,4 +257,4 @@ const Clientes = () => {
     );
 };
 
-export default Clientes;
+export default Detalles;

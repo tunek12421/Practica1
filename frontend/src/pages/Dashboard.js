@@ -27,21 +27,19 @@ const Dashboard = () => {
                     <Link
                         to="/clientes"
                         className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
-                        >
+                    >
                         <h3 className="text-xl font-bold text-blue-600">Gestión de Clientes</h3>
                         <p className="text-gray-600">
                             {['Administrador', 'Gerente'].includes(rol)
-                            ? 'Accede para gestionar clientes (CRUD completo).'
-                            : 'Añade nuevos clientes al sistema.'}
+                                ? 'Accede para gestionar clientes (CRUD completo).'
+                                : 'Añade nuevos clientes al sistema.'}
                         </p>
                     </Link>
-
 
                     {/* Gestión de Productos */}
                     <Link
                         to="/productos"
                         className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
-
                     >
                         <h3 className="text-xl font-bold text-green-600">Gestión de Productos</h3>
                         <p className="text-gray-600">
@@ -52,24 +50,20 @@ const Dashboard = () => {
                     </Link>
 
                     {/* Gestión de Categorías */}
-                    <Link
-                        to="/categorias"
-                        className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
-
-                    >
-                        <h3 className="text-xl font-bold text-orange-600">Gestión de Categorías</h3>
-                        <p className="text-gray-600">
-                            {['Administrador', 'Gerente'].includes(rol)
-                                ? 'Gestiona categorías: consulta, edita y añade nuevas.'
-                                : 'Consulta las categorías disponibles.'}
-                        </p>
-                    </Link>
+                    {['Administrador', 'Gerente'].includes(rol) && (
+                        <Link
+                            to="/categorias"
+                            className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+                        >
+                            <h3 className="text-xl font-bold text-orange-600">Gestión de Categorías</h3>
+                            <p className="text-gray-600">Gestiona categorías: consulta, edita y añade nuevas.</p>
+                        </Link>
+                    )}
 
                     {/* Gestión de Ventas */}
                     <Link
                         to="/ventas"
                         className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
-
                     >
                         <h3 className="text-xl font-bold text-yellow-600">Gestión de Ventas</h3>
                         <p className="text-gray-600">
@@ -78,6 +72,45 @@ const Dashboard = () => {
                                 : 'Acceso restringido.'}
                         </p>
                     </Link>
+
+                    {/* Gestión de Facturas (sin acceso para empleados) */}
+                    {['Administrador', 'Gerente'].includes(rol) && (
+                        <Link
+                            to="/facturas"
+                            className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+                        >
+                            <h3 className="text-xl font-bold text-purple-600">Gestión de Facturas</h3>
+                            <p className="text-gray-600">
+                                Consulta y gestiona las facturas generadas para los clientes.
+                            </p>
+                        </Link>
+                    )}
+
+                    {/* Gestión de Detalles */}
+                    {['Administrador', 'Gerente'].includes(rol) && (
+                        <Link
+                            to="/detalles"
+                            className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+                        >
+                            <h3 className="text-xl font-bold text-teal-600">Gestión de Detalles</h3>
+                            <p className="text-gray-600">
+                                Consulta, edita y añade detalles a facturas.
+                            </p>
+                        </Link>
+                    )}
+
+                    {/* Gestión de Usuarios */}
+                    {['Administrador', 'Gerente'].includes(rol) && (
+                        <Link
+                            to="/usuarios"
+                            className="block p-6 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-all transform"
+                        >
+                            <h3 className="text-xl font-bold text-red-600">Gestión de Usuarios</h3>
+                            <p className="text-gray-600">
+                                Administra usuarios del sistema: edita, añade o elimina cuentas.
+                            </p>
+                        </Link>
+                    )}
                 </div>
             </main>
         </div>

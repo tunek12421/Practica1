@@ -7,7 +7,10 @@ import Clientes from './pages/Clientes';
 import Productos from './pages/Productos';
 import Ventas from './pages/Ventas';
 import Categorias from './pages/Categorias';
-import ModoPago from './pages/ModoPago'; // Importa el componente ModoPago
+import ModoPago from './pages/ModoPago';
+import Facturas from './pages/Facturas';
+import Detalles from './pages/Detalles';
+import LoginCRUD from './pages/LoginCRUD'; // Importa el componente LoginCRU
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -57,6 +60,30 @@ const AppRoutes = () => (
                     element={
                         <ProtectedRoute allowedRoles={['Administrador', 'Gerente']}>
                             <ModoPago />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/facturas"
+                    element={
+                        <ProtectedRoute allowedRoles={['Empleado', 'Administrador', 'Gerente']}>
+                            <Facturas />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/detalles"
+                    element={
+                        <ProtectedRoute allowedRoles={['Administrador', 'Gerente']}>
+                            <Detalles />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/usuarios"
+                    element={
+                        <ProtectedRoute allowedRoles={['Administrador', 'Gerente']}>
+                            <LoginCRUD />
                         </ProtectedRoute>
                     }
                 />
