@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { motion } from 'framer-motion';
 
 const Categorias = () => {
     const [categorias, setCategorias] = useState([]);
@@ -109,30 +110,36 @@ const Categorias = () => {
             {loading ? (
                 <p>Cargando categorías...</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {categorias.map((categoria) => (
-                        <div key={categoria.id_categoria} className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]">
-                            <h3 className="text-xl font-bold text-yellow-600">{categoria.nombre}</h3>
-                            <p className="text-gray-700">Descripción: {categoria.descripcion}</p>
-                            {['Administrador', 'Gerente'].includes(rol) && (
-                                <div className="mt-4 space-x-2">
-                                    <button
-                                        className="bg-yellow-500 text-white px-2 py-1 rounded"
-                                        onClick={() => handleEdit(categoria)}
-                                    >
-                                        Editar
-                                    </button>
-                                    <button
-                                        className="bg-red-500 text-white px-2 py-1 rounded"
-                                        onClick={() => setConfirmDelete(categoria.id_categoria)}
-                                    >
-                                        Eliminar
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 2 }}
+                >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {categorias.map((categoria) => (
+                            <motion.div key={categoria.id_categoria} className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]" whileHover={{ scale: 1.05 }}>
+                                <h3 className="text-xl font-bold text-yellow-600">{categoria.nombre}</h3>
+                                <p className="text-gray-700">Descripción: {categoria.descripcion}</p>
+                                {['Administrador', 'Gerente'].includes(rol) && (
+                                    <div className="mt-4 space-x-2">
+                                        <button
+                                            className="bg-yellow-500 text-white px-2 py-1 rounded"
+                                            onClick={() => handleEdit(categoria)}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            className="bg-red-500 text-white px-2 py-1 rounded"
+                                            onClick={() => setConfirmDelete(categoria.id_categoria)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                )}
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
             )}
 
             {/* Modal para el formulario */}

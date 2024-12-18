@@ -5,3 +5,65 @@
 .transition-all {
     transition: all 0.3s ease-in-out;
 }
+.frozen-form {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.frozen-form::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    pointer-events: none;
+    animation: frozen-border 3s infinite alternate;
+}
+
+@keyframes frozen-border {
+    0% {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    100% {
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+.snow-button {
+    position: relative;
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.snow-button::before,
+.snow-button::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url('../img/snowflake.png') repeat center center;
+    background-size: cover;
+}
+
+.snow-button::before {
+    top: -5px;
+    left: -5px;
+}
+
+.snow-button::after {
+    bottom: -5px;
+    right: -5px;
+}

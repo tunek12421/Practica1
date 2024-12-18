@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { Typewriter } from 'react-simple-typewriter';
+import Snowfall from 'react-snowfall';
 
 const Login = () => {
     const { login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -21,28 +24,56 @@ const Login = () => {
         }
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-bglog bg-cover bg-center "  >
-            <form onSubmit={handleSubmit} className="bg-transparent backdrop-blur-lg p-10 rounded shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] shadow-blue-400 ">
-                <h1 className="text-2xl font-bold  mb-8 text-white text-center ">Bienvenido de nuevo</h1>
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-                <input
-                    type="text"
-                    placeholder="Usuario"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="w-full p-2 mb-3   bg-transparent text-white border-0 border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-200 focus:border-b-2"
-                />
-                <input
-                    type="password"
-                    placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 mb-8   bg-transparent text-white border-0 border-b border-gray-300 focus:border-blue-500 focus:outline-none transition duration-200 focus:border-b-2"
-                />
-                <button type="submit" className="w-full bg-trnasparent border mt-3 text-white py-2 rounded hover:bg-blue-700 hover:border-transparent transition duration-300 ease-in-out">
-                    Ingresar
-                </button>
+        <div className="min-h-screen flex items-center justify-center relative bg-gray-900">
+            <Snowfall />
+            <form onSubmit={handleSubmit} className="frozen-form bg-white bg-opacity-10 backdrop-blur-lg p-10 rounded-lg shadow-lg relative z-10 w-1/4">
+                <h1 className="text-3xl font-bold mb-8 text-white text-center">
+                    <Typewriter
+                        words={['Bienvenido', 'Inicia Sesión']}
+                        loop={false}
+                        cursor
+                        cursorStyle='|'
+                        typeSpeed={120}
+                        deleteSpeed={50}
+                        delaySpeed={1000}
+                    />
+                </h1>
+                <div className="mb-4">
+                    <label className="block text-white mb-2" htmlFor="username">Usuario</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full p-2 rounded bg-gray-800 text-white"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-white mb-2" htmlFor="password">Contraseña</label>
+                    <div className="relative">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full p-2 rounded bg-gray-800 text-white"
+                        />
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute inset-y-0 right-0 px-3 text-white"
+                        >
+                            {showPassword ? 'Ocultar' : 'Mostrar'}
+                        </button>
+                    </div>
+                </div>
+                {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                <button type="submit" className="snow-button w-full bg-blue-500 text-white p-2 rounded">Iniciar Sesión</button>
             </form>
         </div>
     );

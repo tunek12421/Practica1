@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { motion } from 'framer-motion';
 
 const Productos = () => {
     const [productos, setProductos] = useState([]);
@@ -111,32 +112,42 @@ const Productos = () => {
             {loading ? (
                 <p>Cargando productos...</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {productos.map((producto) => (
-                        <div key={producto.id_producto} className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]">
-                            <h3 className="text-xl font-bold text-green-600">{producto.nombre}</h3>
-                            <p className="text-gray-700">Precio: ${producto.precio}</p>
-                            <p className="text-gray-700">Stock: {producto.stock}</p>
-                            <p className="text-gray-700">Categoría: {producto.id_categoria}</p>
-                            {['Administrador', 'Gerente'].includes(rol) && (
-                                <div className="mt-4 space-x-2">
-                                    <button
-                                        className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-400"
-                                        onClick={() => handleEdit(producto)}
-                                    >
-                                        Editar
-                                    </button>
-                                    <button
-                                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-400"
-                                        onClick={() => setConfirmDelete(producto.id_producto)}
-                                    >
-                                        Eliminar
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 2 }}
+                >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {productos.map((producto) => (
+                            <motion.div
+                                key={producto.id_producto}
+                                className="p-6 bg-white shadow-md rounded-lg hover:shadow-[0px_0px_20px_7px_#00000024]"
+                                whileHover={{ scale: 1.05 }}
+                            >
+                                <h3 className="text-xl font-bold text-green-600">{producto.nombre}</h3>
+                                <p className="text-gray-700">Precio: ${producto.precio}</p>
+                                <p className="text-gray-700">Stock: {producto.stock}</p>
+                                <p className="text-gray-700">Categoría: {producto.id_categoria}</p>
+                                {['Administrador', 'Gerente'].includes(rol) && (
+                                    <div className="mt-4 space-x-2">
+                                        <button
+                                            className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-400"
+                                            onClick={() => handleEdit(producto)}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-400"
+                                            onClick={() => setConfirmDelete(producto.id_producto)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                )}
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
             )}
 
             {/* Modal para el formulario */}

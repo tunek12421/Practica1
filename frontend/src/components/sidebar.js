@@ -8,13 +8,22 @@ import {
   FiLayers,
   FiLogOut,
   FiDollarSign,
+  FiFileText,
+  FiClipboard,
+  FiUserCheck,
 } from "react-icons/fi";
 import { AiOutlineLogout } from "react-icons/ai"; // Nuevo icono para cerrar sesión colapsado
 
 const Sidebar = () => {
-  const { logout } = useAuth();
+  const { auth, logout } = useAuth();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  if (!auth || !auth.user) {
+    return null; // No renderiza el sidebar si el usuario no está autenticado
+  }
+
+  const { rol } = auth.user;
 
   const handleLogout = () => {
     logout(); // Elimina el token y limpia el contexto
@@ -64,21 +73,23 @@ const Sidebar = () => {
           </div>
 
           {/* Categorías */}
-          <div className="flex items-center space-x-4">
-            <Link
-              to="/categorias"
-              className="flex items-center space-x-4 hover:text-blue-300"
-            >
-              <FiLayers size={25} />
-              <span
-                className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
-                  isCollapsed ? "opacity-0" : "opacity-100"
-                }`}
+          {["Administrador", "Gerente"].includes(rol) && (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/categorias"
+                className="flex items-center space-x-4 hover:text-blue-300"
               >
-                Categorias
-              </span>
-            </Link>
-          </div>
+                <FiLayers size={25} />
+                <span
+                  className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
+                    isCollapsed ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  Categorías
+                </span>
+              </Link>
+            </div>
+          )}
 
           {/* Clientes */}
           <div className="flex items-center space-x-4">
@@ -98,7 +109,6 @@ const Sidebar = () => {
           </div>
 
           {/* Ventas */}
-
           <div className="flex items-center space-x-4">
             <Link
               to="/ventas"
@@ -115,21 +125,81 @@ const Sidebar = () => {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <Link
-              to="/modopago"
-              className="flex items-center space-x-4 hover:text-blue-300"
-            >
-              <FiDollarSign size={25} />
-              <span
-                className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
-                  isCollapsed ? "opacity-0" : "opacity-100"
-                }`}
+          {/* Pagos */}
+          {["Administrador", "Gerente"].includes(rol) && (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/modopago"
+                className="flex items-center space-x-4 hover:text-blue-300"
               >
-                Pagos
-              </span>
-            </Link>
-          </div>
+                <FiDollarSign size={25} />
+                <span
+                  className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
+                    isCollapsed ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  Pagos
+                </span>
+              </Link>
+            </div>
+          )}
+
+          {/* Facturas */}
+          {["Administrador", "Gerente"].includes(rol) && (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/facturas"
+                className="flex items-center space-x-4 hover:text-blue-300"
+              >
+                <FiFileText size={25} />
+                <span
+                  className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
+                    isCollapsed ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  Facturas
+                </span>
+              </Link>
+            </div>
+          )}
+
+          {/* Detalles */}
+          {["Administrador", "Gerente"].includes(rol) && (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/detalles"
+                className="flex items-center space-x-4 hover:text-blue-300"
+              >
+                <FiClipboard size={25} />
+                <span
+                  className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
+                    isCollapsed ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  Detalles
+                </span>
+              </Link>
+            </div>
+          )}
+
+          {/* Usuarios */}
+          {["Administrador", "Gerente"].includes(rol) && (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/usuarios"
+                className="flex items-center space-x-4 hover:text-blue-300"
+              >
+                <FiUserCheck size={25} />
+                <span
+                  className={`transition-opacity hover:translate-x-px duration-300 ease-in-out ${
+                    isCollapsed ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  Usuarios
+                </span>
+              </Link>
+            </div>
+          )}
         </nav>
 
         {/* Botón de Cerrar Sesión */}

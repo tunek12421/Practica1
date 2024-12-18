@@ -8,12 +8,17 @@
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "crypto-js": "^4.2.0",
+    "framer-motion": "^11.15.0",
     "jwt-decode": "^4.0.0",
+    "particles-bg": "^2.5.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
+    "react-simple-typewriter": "^5.0.1",
+    "react-snowfall": "^2.2.0",
+    "react-tsparticles": "^2.12.2",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
